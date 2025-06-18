@@ -1,0 +1,69 @@
+{
+  "project_info": {
+    "project_number": "32205103587",
+    "firebase_url": "https://movewise-2e08d-default-rtdb.firebaseio.com",
+    "project_id": "movewise-2e08d",
+    "storage_bucket": "movewise-2e08d.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:32205103587:android:b3e33988b33c3d4c9040d6",
+        "android_client_info": {
+          "package_name": "com.example.flutter_application_1"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "32205103587-e02spg5tcroak3a27721i58neadmoqqq.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDOuzrtNKP4KtEk9k5UPJcPGNdifOEneqY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "32205103587-e02spg5tcroak3a27721i58neadmoqqq.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:32205103587:android:447d24e27e7a4de19040d6",
+        "android_client_info": {
+          "package_name": "com.movewise"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "32205103587-e02spg5tcroak3a27721i58neadmoqqq.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDOuzrtNKP4KtEk9k5UPJcPGNdifOEneqY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "32205103587-e02spg5tcroak3a27721i58neadmoqqq.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
