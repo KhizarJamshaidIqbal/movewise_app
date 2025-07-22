@@ -8,6 +8,8 @@ import 'history_screen.dart';
 import 'settings_screen.dart';
 import '../widgets/workout_statistics_card.dart';
 import '../widgets/modern_bottom_nav.dart';
+import '../screens/recent_predictions_screen.dart';
+import '../widgets/custom_page_route.dart';
 
 class DashboardScreen extends StatefulWidget {
   final String userName;
@@ -62,6 +64,23 @@ class HomeContent extends StatelessWidget {
 
   FirebaseFirestore get _firestore => FirebaseFirestore.instance;
   FirebaseAuth get _auth => FirebaseAuth.instance;
+
+  // Get predictions stream with fallback for index error
+  Stream<QuerySnapshot> _getPredictionsStream() {
+    try {
+      return _firestore
+          .collection('exercise_predictions')
+          .where('userId', isEqualTo: _auth.currentUser?.uid)
+          .limit(5)
+          .snapshots();
+    } catch (e) {
+      // Just return the basic stream if there's an error
+      return _firestore
+          .collection('exercise_predictions')
+          .where('userId', isEqualTo: _auth.currentUser?.uid)
+          .snapshots();
+    }
+  }
 
   String _getTimeAgo(DateTime timestamp) {
     final now = DateTime.now();
@@ -121,7 +140,7 @@ class HomeContent extends StatelessWidget {
     return SingleChildScrollView(
       child: Column(
         children: [
-          SizedBox(height: 10),
+          SizedBox(height: 20),
           // Enhanced User Profile Section
           Container(
             margin: const EdgeInsets.all(16.0),
@@ -388,18 +407,24 @@ class HomeContent extends StatelessWidget {
                       ),
                     ),
                     const SizedBox(width: 12),
-                    const Text(
-                      "Recent Exercise Predictions",
-                      style: TextStyle(
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.black87,
+                    Expanded(
+                      child: Text(
+                        "Recent Exercise Predictions",
+                        style: const TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.black87,
+                        ),
+                        overflow: TextOverflow.ellipsis,
                       ),
                     ),
-                    const Spacer(),
                     TextButton(
                       onPressed: () {
-                        // Navigate to full history
+                        Navigator.of(context).push(
+                          CustomPageRoute(
+                            child: const RecentPredictionsScreen(),
+                          ),
+                        );
                       },
                       child: Text(
                         "View All",
@@ -415,12 +440,7 @@ class HomeContent extends StatelessWidget {
                 SizedBox(
                   height: 180,
                   child: StreamBuilder<QuerySnapshot>(
-                    stream:
-                        _firestore
-                            .collection('exercise_predictions')
-                            .where('userId', isEqualTo: _auth.currentUser?.uid)
-                            .limit(5)
-                            .snapshots(),
+                    stream: _getPredictionsStream(),
                     builder: (context, snapshot) {
                       if (snapshot.connectionState == ConnectionState.waiting) {
                         return const Center(child: CircularProgressIndicator());
@@ -567,6 +587,7 @@ class HomeContent extends StatelessWidget {
                                             color: exerciseColor,
                                           ),
                                           overflow: TextOverflow.ellipsis,
+                                          maxLines: 1,
                                         ),
                                       ),
                                     ],
@@ -574,7 +595,9 @@ class HomeContent extends StatelessWidget {
                                   const SizedBox(height: 12),
 
                                   // Confidence and side info
-                                  Row(
+                                  Wrap(
+                                    spacing: 8,
+                                    runSpacing: 8,
                                     children: [
                                       Container(
                                         padding: const EdgeInsets.symmetric(
@@ -607,7 +630,6 @@ class HomeContent extends StatelessWidget {
                                           ],
                                         ),
                                       ),
-                                      const SizedBox(width: 8),
                                       Container(
                                         padding: const EdgeInsets.symmetric(
                                           horizontal: 8,
