@@ -1,40 +1,38 @@
 // ignore_for_file: use_super_parameters
 
 import 'package:flutter/material.dart';
-import 'package:flutter_application_1/screens/registration_screen.dart';
 import 'screens/login_screen.dart';
 import 'screens/dashboard_screen.dart';
-import 'screens/settings_screen.dart';
-import 'screens/profile_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'firebase_options.dart';
+import 'screens/splash_screen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
-  runApp(const MoveWiseApp());
+  runApp(const MyApp());
 }
 
-class MoveWiseApp extends StatelessWidget {
-  const MoveWiseApp({Key? key}) : super(key: key);
+class MyApp extends StatelessWidget {
+  const MyApp({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      title: 'MoveWise',
       debugShowCheckedModeBanner: false,
-      title: 'MOVEWISE',
-      theme: ThemeData(primarySwatch: Colors.blue),
-      routes: {
-        '/login': (context) => const LoginScreen(),
-        '/signup': (context) => const RegistrationScreen(),
-        '/dashboard': (context) => const DashboardScreen(userName: 'User'),
-        '/settings': (context) => const SettingsScreen(userName: 'User'),
-        '/profile': (context) => const ProfileScreen(userName: 'User'),
-      },
-      // Check authentication state before deciding which screen to show
-      home: const AuthWrapper(),
+      theme: ThemeData(
+        primarySwatch: Colors.deepPurple,
+        fontFamily: 'Poppins',
+        useMaterial3: true,
+        colorScheme: ColorScheme.fromSeed(
+          seedColor: Colors.deepPurple,
+          brightness: Brightness.light,
+        ),
+      ),
+      home: const SplashScreen(),
     );
   }
 }

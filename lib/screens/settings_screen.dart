@@ -76,7 +76,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   ],
                 ),
               ),
-              
+
               Expanded(
                 child: SingleChildScrollView(
                   padding: const EdgeInsets.symmetric(horizontal: 20.0),
@@ -85,90 +85,85 @@ class _SettingsScreenState extends State<SettingsScreen> {
                       // Profile Section
                       _buildProfileSection(),
                       const SizedBox(height: 24),
-                      
+
                       // App Settings
-                      _buildSettingsSection(
-                        'App Settings',
-                        [
-                          _buildSwitchTile(
-                            'Notifications',
-                            'Receive workout reminders and updates',
-                            Icons.notifications_outlined,
-                            _notificationsEnabled,
-                            (value) => setState(() => _notificationsEnabled = value),
-                          ),
-                          _buildSwitchTile(
-                            'Dark Mode',
-                            'Switch to dark theme',
-                            Icons.dark_mode_outlined,
-                            _darkModeEnabled,
-                            (value) => setState(() => _darkModeEnabled = value),
-                          ),
-                          _buildSwitchTile(
-                            'Sound Effects',
-                            'Enable app sounds and feedback',
-                            Icons.volume_up_outlined,
-                            _soundEnabled,
-                            (value) => setState(() => _soundEnabled = value),
-                          ),
-                        ],
-                      ),
+                      // _buildSettingsSection(
+                      //   'App Settings',
+                      //   [
+                      //     _buildSwitchTile(
+                      //       'Notifications',
+                      //       'Receive workout reminders and updates',
+                      //       Icons.notifications_outlined,
+                      //       _notificationsEnabled,
+                      //       (value) => setState(() => _notificationsEnabled = value),
+                      //     ),
+                      //     _buildSwitchTile(
+                      //       'Dark Mode',
+                      //       'Switch to dark theme',
+                      //       Icons.dark_mode_outlined,
+                      //       _darkModeEnabled,
+                      //       (value) => setState(() => _darkModeEnabled = value),
+                      //     ),
+                      //     _buildSwitchTile(
+                      //       'Sound Effects',
+                      //       'Enable app sounds and feedback',
+                      //       Icons.volume_up_outlined,
+                      //       _soundEnabled,
+                      //       (value) => setState(() => _soundEnabled = value),
+                      //     ),
+                      //   ],
+                      // ),
                       const SizedBox(height: 24),
-                      
+
                       // Account Settings
-                      _buildSettingsSection(
-                        'Account',
-                        [
-                          _buildActionTile(
-                            'Privacy Policy',
-                            'Read our privacy policy',
-                            Icons.privacy_tip_outlined,
-                            () => Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => const PrivacyPolicyScreen(),
-                              ),
+                      _buildSettingsSection('Account', [
+                        _buildActionTile(
+                          'Privacy Policy',
+                          'Read our privacy policy',
+                          Icons.privacy_tip_outlined,
+                          () => Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => const PrivacyPolicyScreen(),
                             ),
                           ),
-                          _buildActionTile(
-                            'Terms of Service',
-                            'View terms and conditions',
-                            Icons.description_outlined,
-                            () => Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => const TermsOfServiceScreen(),
-                              ),
+                        ),
+                        _buildActionTile(
+                          'Terms of Service',
+                          'View terms and conditions',
+                          Icons.description_outlined,
+                          () => Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder:
+                                  (context) => const TermsOfServiceScreen(),
                             ),
                           ),
-                          _buildActionTile(
-                            'Help & Support',
-                            'Get help and contact support',
-                            Icons.help_outline,
-                            () => Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => const HelpSupportScreen(),
-                              ),
+                        ),
+                        _buildActionTile(
+                          'Help & Support',
+                          'Get help and contact support',
+                          Icons.help_outline,
+                          () => Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => const HelpSupportScreen(),
                             ),
                           ),
-                        ],
-                      ),
+                        ),
+                      ]),
                       const SizedBox(height: 24),
-                      
+
                       // Danger Zone
-                      _buildSettingsSection(
-                        'Account Actions',
-                        [
-                          _buildActionTile(
-                            'Sign Out',
-                            'Sign out of your account',
-                            Icons.logout,
-                            () => _showSignOutDialog(),
-                            isDestructive: true,
-                          ),
-                        ],
-                      ),
+                      _buildSettingsSection('Account Actions', [
+                        _buildActionTile(
+                          'Sign Out',
+                          'Sign out of your account',
+                          Icons.logout,
+                          () => _showSignOutDialog(),
+                          isDestructive: true,
+                        ),
+                      ]),
                       const SizedBox(height: 40),
                     ],
                   ),
@@ -246,7 +241,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => ProfileScreen(userName: widget.userName),
+                  builder:
+                      (context) => ProfileScreen(userName: widget.userName),
                 ),
               );
             },
@@ -256,11 +252,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 color: Colors.white.withOpacity(0.2),
                 borderRadius: BorderRadius.circular(12),
               ),
-              child: const Icon(
-                Icons.edit,
-                color: Colors.white,
-                size: 20,
-              ),
+              child: const Icon(Icons.edit, color: Colors.white, size: 20),
             ),
           ),
         ],
@@ -318,11 +310,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
               color: Colors.deepPurple.shade50,
               borderRadius: BorderRadius.circular(8),
             ),
-            child: Icon(
-              icon,
-              color: Colors.deepPurple.shade600,
-              size: 20,
-            ),
+            child: Icon(icon, color: Colors.deepPurple.shade600, size: 20),
           ),
           const SizedBox(width: 16),
           Expanded(
@@ -340,10 +328,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 const SizedBox(height: 2),
                 Text(
                   subtitle,
-                  style: TextStyle(
-                    fontSize: 12,
-                    color: Colors.grey.shade600,
-                  ),
+                  style: TextStyle(fontSize: 12, color: Colors.grey.shade600),
                 ),
               ],
             ),
@@ -374,16 +359,18 @@ class _SettingsScreenState extends State<SettingsScreen> {
             Container(
               padding: const EdgeInsets.all(8),
               decoration: BoxDecoration(
-                color: isDestructive 
-                    ? Colors.red.shade50 
-                    : Colors.deepPurple.shade50,
+                color:
+                    isDestructive
+                        ? Colors.red.shade50
+                        : Colors.deepPurple.shade50,
                 borderRadius: BorderRadius.circular(8),
               ),
               child: Icon(
                 icon,
-                color: isDestructive 
-                    ? Colors.red.shade600 
-                    : Colors.deepPurple.shade600,
+                color:
+                    isDestructive
+                        ? Colors.red.shade600
+                        : Colors.deepPurple.shade600,
                 size: 20,
               ),
             ),
@@ -397,16 +384,14 @@ class _SettingsScreenState extends State<SettingsScreen> {
                     style: TextStyle(
                       fontSize: 16,
                       fontWeight: FontWeight.w600,
-                      color: isDestructive ? Colors.red.shade700 : Colors.black87,
+                      color:
+                          isDestructive ? Colors.red.shade700 : Colors.black87,
                     ),
                   ),
                   const SizedBox(height: 2),
                   Text(
                     subtitle,
-                    style: TextStyle(
-                      fontSize: 12,
-                      color: Colors.grey.shade600,
-                    ),
+                    style: TextStyle(fontSize: 12, color: Colors.grey.shade600),
                   ),
                 ],
               ),
@@ -422,49 +407,50 @@ class _SettingsScreenState extends State<SettingsScreen> {
     );
   }
 
-
-
   void _showSignOutDialog() {
     showDialog(
       context: context,
-      builder: (context) => AlertDialog(
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(16),
-        ),
-        title: const Row(
-          children: [
-            Icon(Icons.logout, color: Colors.red, size: 28),
-            SizedBox(width: 8),
-            Text('Sign Out'),
-          ],
-        ),
-        content: const Text(
-          'Are you sure you want to sign out of your account?',
-        ),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(context),
-            child: const Text('Cancel'),
-          ),
-          ElevatedButton(
-            style: ElevatedButton.styleFrom(
-              backgroundColor: Colors.red,
-              foregroundColor: Colors.white,
+      builder:
+          (context) => AlertDialog(
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(16),
             ),
-            onPressed: () async {
-              await _auth.signOut();
-              if (mounted) {
-                Navigator.pushAndRemoveUntil(
-                  context,
-                  MaterialPageRoute(builder: (context) => const LoginScreen()),
-                  (route) => false,
-                );
-              }
-            },
-            child: const Text('Sign Out'),
+            title: const Row(
+              children: [
+                Icon(Icons.logout, color: Colors.red, size: 28),
+                SizedBox(width: 8),
+                Text('Sign Out'),
+              ],
+            ),
+            content: const Text(
+              'Are you sure you want to sign out of your account?',
+            ),
+            actions: [
+              TextButton(
+                onPressed: () => Navigator.pop(context),
+                child: const Text('Cancel'),
+              ),
+              ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.red,
+                  foregroundColor: Colors.white,
+                ),
+                onPressed: () async {
+                  await _auth.signOut();
+                  if (mounted) {
+                    Navigator.pushAndRemoveUntil(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const LoginScreen(),
+                      ),
+                      (route) => false,
+                    );
+                  }
+                },
+                child: const Text('Sign Out'),
+              ),
+            ],
           ),
-        ],
-      ),
     );
   }
 }

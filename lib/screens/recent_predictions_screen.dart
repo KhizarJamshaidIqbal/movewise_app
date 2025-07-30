@@ -98,9 +98,10 @@ class RecentPredictionsScreen extends StatelessWidget {
 
           if (snapshot.hasError) {
             final error = snapshot.error.toString();
-            final isIndexError = error.contains('FAILED_PRECONDITION') && 
-                                error.contains('requires an index');
-            
+            final isIndexError =
+                error.contains('FAILED_PRECONDITION') &&
+                error.contains('requires an index');
+
             return Center(
               child: Padding(
                 padding: const EdgeInsets.all(24.0),
@@ -109,17 +110,23 @@ class RecentPredictionsScreen extends StatelessWidget {
                   children: [
                     Icon(
                       isIndexError ? Icons.build : Icons.error_outline,
-                      color: isIndexError ? Colors.amber.shade400 : Colors.red.shade400,
+                      color:
+                          isIndexError
+                              ? Colors.amber.shade400
+                              : Colors.red.shade400,
                       size: 48,
                     ),
                     const SizedBox(height: 16),
                     Text(
-                      isIndexError 
+                      isIndexError
                           ? 'Firebase Index Required'
                           : 'Error loading predictions',
                       textAlign: TextAlign.center,
                       style: TextStyle(
-                        color: isIndexError ? Colors.amber.shade700 : Colors.red.shade600,
+                        color:
+                            isIndexError
+                                ? Colors.amber.shade700
+                                : Colors.red.shade600,
                         fontSize: 20,
                         fontWeight: FontWeight.bold,
                       ),
@@ -189,18 +196,12 @@ class RecentPredictionsScreen extends StatelessWidget {
                   const SizedBox(height: 8),
                   Text(
                     'No predictions yet',
-                    style: TextStyle(
-                      color: Colors.grey.shade600,
-                      fontSize: 16,
-                    ),
+                    style: TextStyle(color: Colors.grey.shade600, fontSize: 16),
                   ),
                   const SizedBox(height: 4),
                   Text(
                     'Start predicting exercises to see history',
-                    style: TextStyle(
-                      color: Colors.grey.shade500,
-                      fontSize: 12,
-                    ),
+                    style: TextStyle(color: Colors.grey.shade500, fontSize: 12),
                   ),
                 ],
               ),
@@ -217,7 +218,8 @@ class RecentPredictionsScreen extends StatelessWidget {
               final exercise = data['exercise'] ?? 'Unknown';
               final confidence = data['confidence']?.toString() ?? '0';
               final side = data['side'] ?? 'Unknown';
-              final timestamp = (data['timestamp'] as Timestamp?)?.toDate() ?? DateTime.now();
+              final timestamp =
+                  (data['timestamp'] as Timestamp?)?.toDate() ?? DateTime.now();
 
               final exerciseColor = _getExerciseColor(exercise);
               final exerciseIcon = _getExerciseIcon(exercise);
@@ -226,10 +228,7 @@ class RecentPredictionsScreen extends StatelessWidget {
                 margin: const EdgeInsets.only(bottom: 16),
                 decoration: BoxDecoration(
                   gradient: LinearGradient(
-                    colors: [
-                      Colors.white,
-                      exerciseColor.withOpacity(0.05),
-                    ],
+                    colors: [Colors.white, exerciseColor.withOpacity(0.05)],
                     begin: Alignment.topLeft,
                     end: Alignment.bottomRight,
                   ),
@@ -323,22 +322,24 @@ class RecentPredictionsScreen extends StatelessWidget {
                               vertical: 6,
                             ),
                             decoration: BoxDecoration(
-                              color: side.toLowerCase() == 'left'
-                                  ? Colors.blue.shade100
-                                  : Colors.orange.shade100,
+                              color:
+                                  side.toLowerCase() == 'left'
+                                      ? Colors.blue.shade100
+                                      : Colors.orange.shade100,
                               borderRadius: BorderRadius.circular(12),
                             ),
                             child: Row(
                               mainAxisSize: MainAxisSize.min,
                               children: [
                                 Icon(
-                                  side.toLowerCase() == 'left' 
-                                      ? Icons.keyboard_arrow_left 
+                                  side.toLowerCase() == 'left'
+                                      ? Icons.keyboard_arrow_left
                                       : Icons.keyboard_arrow_right,
                                   size: 14,
-                                  color: side.toLowerCase() == 'left'
-                                      ? Colors.blue.shade700
-                                      : Colors.orange.shade700,
+                                  color:
+                                      side.toLowerCase() == 'left'
+                                          ? Colors.blue.shade700
+                                          : Colors.orange.shade700,
                                 ),
                                 const SizedBox(width: 4),
                                 Text(
@@ -346,9 +347,10 @@ class RecentPredictionsScreen extends StatelessWidget {
                                   style: TextStyle(
                                     fontSize: 14,
                                     fontWeight: FontWeight.bold,
-                                    color: side.toLowerCase() == 'left'
-                                        ? Colors.blue.shade700
-                                        : Colors.orange.shade700,
+                                    color:
+                                        side.toLowerCase() == 'left'
+                                            ? Colors.blue.shade700
+                                            : Colors.orange.shade700,
                                   ),
                                 ),
                               ],
@@ -411,4 +413,4 @@ class RecentPredictionsScreen extends StatelessWidget {
       ),
     );
   }
-} 
+}

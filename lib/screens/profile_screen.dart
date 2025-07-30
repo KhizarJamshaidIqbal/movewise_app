@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import '../widgets/workout_statistics_card.dart';
 
 class ProfileScreen extends StatefulWidget {
   final String userName;
@@ -14,31 +15,25 @@ class _ProfileScreenState extends State<ProfileScreen> {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   final _formKey = GlobalKey<FormState>();
-  
+
   late TextEditingController _nameController;
   late TextEditingController _emailController;
   late TextEditingController _phoneController;
   late TextEditingController _bioController;
-  
+
   bool _isLoading = false;
   bool _isEditing = false;
-  
-  Map<String, dynamic> _userStats = {
-    'totalWorkouts': 0,
-    'totalExercises': 0,
-    'averageConfidence': 0.0,
-    'favoriteExercise': 'None',
-  };
 
   @override
   void initState() {
     super.initState();
     _nameController = TextEditingController(text: widget.userName);
-    _emailController = TextEditingController(text: _auth.currentUser?.email ?? '');
+    _emailController = TextEditingController(
+      text: _auth.currentUser?.email ?? '',
+    );
     _phoneController = TextEditingController();
     _bioController = TextEditingController();
     _loadUserData();
-    _loadUserStats();
   }
 
   @override
@@ -52,11 +47,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   Future<void> _loadUserData() async {
     try {
-      final userDoc = await _firestore
-          .collection('users')
-          .doc(_auth.currentUser?.uid)
-          .get();
-      
+      final userDoc =
+          await _firestore
+              .collection('users')
+              .doc(_auth.currentUser?.uid)
+              .get();
+
       if (userDoc.exists) {
         final data = userDoc.data() as Map<String, dynamic>;
         setState(() {
@@ -70,64 +66,21 @@ class _ProfileScreenState extends State<ProfileScreen> {
     }
   }
 
-  Future<void> _loadUserStats() async {
-    try {
-      final predictions = await _firestore
-          .collection('exercise_predictions')
-          .where('userId', isEqualTo: _auth.currentUser?.uid)
-          .get();
-      
-      if (predictions.docs.isNotEmpty) {
-        final exercises = <String>{};
-        double totalConfidence = 0;
-        final exerciseCounts = <String, int>{};
-        
-        for (final doc in predictions.docs) {
-          final data = doc.data();
-          final exercise = data['exercise'] as String? ?? 'Unknown';
-          final confidence = (data['confidence'] as num?)?.toDouble() ?? 0.0;
-          
-          exercises.add(exercise);
-          totalConfidence += confidence;
-          exerciseCounts[exercise] = (exerciseCounts[exercise] ?? 0) + 1;
-        }
-        
-        final favoriteExercise = exerciseCounts.entries
-            .reduce((a, b) => a.value > b.value ? a : b)
-            .key;
-        
-        setState(() {
-          _userStats = {
-            'totalWorkouts': predictions.docs.length,
-            'totalExercises': exercises.length,
-            'averageConfidence': totalConfidence / predictions.docs.length,
-            'favoriteExercise': favoriteExercise,
-          };
-        });
-      }
-    } catch (e) {
-      debugPrint('Error loading user stats: $e');
-    }
-  }
-
   Future<void> _updateProfile() async {
     if (!_formKey.currentState!.validate()) return;
-    
+
     setState(() => _isLoading = true);
-    
+
     try {
-      await _firestore
-          .collection('users')
-          .doc(_auth.currentUser?.uid)
-          .update({
+      await _firestore.collection('users').doc(_auth.currentUser?.uid).update({
         'name': _nameController.text.trim(),
         'phone': _phoneController.text.trim(),
         'bio': _bioController.text.trim(),
         'updatedAt': FieldValue.serverTimestamp(),
       });
-      
+
       setState(() => _isEditing = false);
-      
+
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
           content: Text('Profile updated successfully!'),
@@ -216,7 +169,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   ],
                 ),
               ),
-              
+
               Expanded(
                 child: SingleChildScrollView(
                   padding: const EdgeInsets.symmetric(horizontal: 20.0),
@@ -227,15 +180,15 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         // Profile Picture Section
                         _buildProfilePictureSection(),
                         const SizedBox(height: 32),
-                        
+
                         // User Info Section
                         _buildUserInfoSection(),
                         const SizedBox(height: 24),
-                        
+
                         // Stats Section
-                        _buildStatsSection(),
+                        const WorkoutStatisticsCard(isDashboard: false),
                         const SizedBox(height: 24),
-                        
+
                         // Action Buttons
                         if (_isEditing) _buildActionButtons(),
                         const SizedBox(height: 40),
@@ -273,7 +226,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 padding: const EdgeInsets.all(4),
                 decoration: BoxDecoration(
                   gradient: LinearGradient(
-                    colors: [Colors.deepPurple.shade600, Colors.deepPurple.shade400],
+                    colors: [
+                      Colors.deepPurple.shade600,
+                      Colors.deepPurple.shade400,
+                    ],
                   ),
                   borderRadius: BorderRadius.circular(60),
                 ),
@@ -319,10 +275,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
           const SizedBox(height: 4),
           Text(
             _emailController.text,
-            style: TextStyle(
-              fontSize: 14,
-              color: Colors.grey.shade600,
-            ),
+            style: TextStyle(fontSize: 14, color: Colors.grey.shade600),
           ),
         ],
       ),
@@ -355,7 +308,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
             ),
           ),
           const SizedBox(height: 20),
-          
+
           _buildTextField(
             controller: _nameController,
             label: 'Full Name',
@@ -369,7 +322,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
             },
           ),
           const SizedBox(height: 16),
-          
+
           _buildTextField(
             controller: _emailController,
             label: 'Email Address',
@@ -377,7 +330,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
             enabled: false, // Email should not be editable
           ),
           const SizedBox(height: 16),
-          
+
           _buildTextField(
             controller: _phoneController,
             label: 'Phone Number',
@@ -385,7 +338,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
             enabled: _isEditing,
           ),
           const SizedBox(height: 16),
-          
+
           _buildTextField(
             controller: _bioController,
             label: 'Bio',
@@ -431,123 +384,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
     );
   }
 
-  Widget _buildStatsSection() {
-    return Container(
-      padding: const EdgeInsets.all(20),
-      decoration: BoxDecoration(
-        gradient: LinearGradient(
-          colors: [Colors.deepPurple.shade600, Colors.deepPurple.shade400],
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
-        ),
-        borderRadius: BorderRadius.circular(16),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.deepPurple.shade200,
-            blurRadius: 12,
-            offset: const Offset(0, 6),
-          ),
-        ],
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          const Text(
-            'Workout Statistics',
-            style: TextStyle(
-              fontSize: 18,
-              fontWeight: FontWeight.bold,
-              color: Colors.white,
-            ),
-          ),
-          const SizedBox(height: 20),
-          
-          Row(
-            children: [
-              Expanded(
-                child: _buildStatCard(
-                  'Total Workouts',
-                  _userStats['totalWorkouts'].toString(),
-                  Icons.fitness_center,
-                ),
-              ),
-              const SizedBox(width: 12),
-              Expanded(
-                child: _buildStatCard(
-                  'Exercises',
-                  _userStats['totalExercises'].toString(),
-                  Icons.sports_gymnastics,
-                ),
-              ),
-            ],
-          ),
-          const SizedBox(height: 12),
-          
-          Row(
-            children: [
-              Expanded(
-                child: _buildStatCard(
-                  'Avg Confidence',
-                  '${(_userStats['averageConfidence'] * 100).toStringAsFixed(1)}%',
-                  Icons.trending_up,
-                ),
-              ),
-              const SizedBox(width: 12),
-              Expanded(
-                child: _buildStatCard(
-                  'Favorite',
-                  _userStats['favoriteExercise'],
-                  Icons.favorite,
-                  isText: true,
-                ),
-              ),
-            ],
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildStatCard(String title, String value, IconData icon, {bool isText = false}) {
-    return Container(
-      padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        color: Colors.white.withOpacity(0.2),
-        borderRadius: BorderRadius.circular(12),
-      ),
-      child: Column(
-        children: [
-          Icon(
-            icon,
-            color: Colors.white,
-            size: 24,
-          ),
-          const SizedBox(height: 8),
-          Text(
-            value,
-            style: TextStyle(
-              fontSize: isText ? 12 : 18,
-              fontWeight: FontWeight.bold,
-              color: Colors.white,
-            ),
-            textAlign: TextAlign.center,
-            maxLines: 1,
-            overflow: TextOverflow.ellipsis,
-          ),
-          const SizedBox(height: 4),
-          Text(
-            title,
-            style: TextStyle(
-              fontSize: 10,
-              color: Colors.white.withOpacity(0.8),
-            ),
-            textAlign: TextAlign.center,
-          ),
-        ],
-      ),
-    );
-  }
-
   Widget _buildActionButtons() {
     return Row(
       children: [
@@ -580,19 +416,23 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 borderRadius: BorderRadius.circular(12),
               ),
             ),
-            child: _isLoading
-                ? const SizedBox(
-                    height: 20,
-                    width: 20,
-                    child: CircularProgressIndicator(
-                      strokeWidth: 2,
-                      valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+            child:
+                _isLoading
+                    ? const SizedBox(
+                      height: 20,
+                      width: 20,
+                      child: CircularProgressIndicator(
+                        strokeWidth: 2,
+                        valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+                      ),
+                    )
+                    : const Text(
+                      'Save Changes',
+                      style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.w600,
+                      ),
                     ),
-                  )
-                : const Text(
-                    'Save Changes',
-                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
-                  ),
           ),
         ),
       ],

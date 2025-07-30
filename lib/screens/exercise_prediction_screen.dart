@@ -127,7 +127,7 @@ class _ExercisePredictionScreenState extends State<ExercisePredictionScreen> {
       final response = await http
           .post(
             Uri.parse(
-              'https://fastapi-example-production-49ab.up.railway.app/predict',
+              'https://fastapi-example-production-5f16.up.railway.app/predict',
             ),
             headers: {
               'Content-Type': 'application/json',
@@ -173,7 +173,7 @@ class _ExercisePredictionScreenState extends State<ExercisePredictionScreen> {
         false,
         'Network Error',
         null,
-        'Unable to connect to the server.\nPlease ensure the FastAPI server is running on https://fastapi-example-production-49ab.up.railway.app\nDetails: $e',
+        'Unable to connect to the server.\nPlease ensure the FastAPI server is running on https://fastapi-example-production-5f16.up.railway.app/predict\nDetails: $e',
       );
     } on FormatException catch (e) {
       _showPredictionDialog(
@@ -527,7 +527,7 @@ class _ExercisePredictionScreenState extends State<ExercisePredictionScreen> {
                         const SizedBox(width: 8),
                         Expanded(
                           child: Text(
-                            'Make sure your FastAPI server is running on https://fastapi-example-production-49ab.up.railway.app',
+                            'Make sure your FastAPI server is running on https://fastapi-example-production-5f16.up.railway.app/predict',
                             style: TextStyle(
                               color: Colors.blue.shade700,
                               fontSize: 12,
